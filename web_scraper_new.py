@@ -13,7 +13,6 @@ from io import StringIO
 config = ConfigParser()
 config.read('.env')
 
-
 #Calling keys from the .env using configparser function
 region = config['AWS']['region']
 access_key = config['AWS']['aws_access_key']
@@ -48,11 +47,13 @@ def extract_data():
     #The step next is as a result of a warning of deprecated method of passing html directly to pd
     #Instead we created a pd.read_html function with a StringIO object which is valid
     #html_data_io = StringIO(html_data)
-    df1 = pd.read_html(html_data)[0]
-    df2 = pd.read_html(html_data)[2]
-    df3 = pd.read_html(html_data)[6]
+    # df1 = pd.read_html(html_data)[0]
+    # df2 = pd.read_html(html_data)[2]
+    # df3 = pd.read_html(html_data)[6]
+    df = pd.read_html(html_data)[0:7]
+    result_df = pd.concat(df)
     #print(df3.head()) #To see what the content of the subset dataframes look like
-    result_df = pd.concat([df1, df2, df3], axis=0, ignore_index=True) #Merging all 3 df into a long df
+    # result_df = pd.concat([df1, df2, df3], axis=0, ignore_index=True) #Merging all 3 df into a long df
     result_df.to_csv('data/raw_ngn_universities.csv', index=False) #Convert result_df into csv and load to local-drive
     print(result_df) #For debugging to make sure the result_df contains Federal, State and Private universities
     print('Data successfully merged and written to a csv file')
